@@ -1,20 +1,31 @@
 const request = require('supertest');
-const app = require('../src/app');ñ
+const app = require('../src/app');
 const Usuario = require('../src/models/Usuario');
+const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
-// Simulamos (mockeamos) el modelo de Usuario para no usar la BD real
 jest.mock('../src/models/Usuario');
 
+let mongoServer;
+
+beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    const uri = mongoServer.getUri();
+    await mongoose.connect(uri);
+});
+
+afterAll(async () => {
+    await mongoose.disconnect();
+    await mongoServer.stop();
+});
+
 describe('Pruebas en el Controlador de Autenticación', () => {
-    
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     test('Debe registrar un usuario exitosamente (201)', async () => {
-        // Simulamos que el usuario no existe
         Usuario.findOne.mockResolvedValue(null);
-        // Simulamos que el usuario se guarda correctamente
         Usuario.prototype.save = jest.fn().mockResolvedValue({});
 
         const res = await request(app)
@@ -30,7 +41,6 @@ describe('Pruebas en el Controlador de Autenticación', () => {
     });
 
     test('Debe fallar si el email ya está registrado (400)', async () => {
-        // Simulamos que el usuario YA existe en la base de datos
         Usuario.findOne.mockResolvedValue({ email: 'test@test.com' });
 
         const res = await request(app)
