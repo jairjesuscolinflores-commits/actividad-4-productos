@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js",
-    "test": "jest"
-  },
+  "start": "node server.js",
+  "dev": "node --watch server.js",
+  "test": "jest"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",

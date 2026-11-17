@@ -2,6 +2,9 @@ const request = require('supertest');
 const app = require('../src/app');
 const Usuario = require('../src/models/Usuario');
 
+// 1. Mockeamos la conexión a la base de datos para que no intente conectarse en la nube
+jest.mock('../src/config/db', () => jest.fn());
+// 2. Mockeamos el modelo de Usuario
 jest.mock('../src/models/Usuario');
 
 describe('Pruebas en el Controlador de Autenticación', () => {
@@ -10,7 +13,9 @@ describe('Pruebas en el Controlador de Autenticación', () => {
     });
 
     test('Debe registrar un usuario exitosamente (201)', async () => {
+        // Simulamos que el usuario no existe en la BD
         Usuario.findOne.mockResolvedValue(null);
+        // Simulamos que el usuario se guarda correctamente
         Usuario.prototype.save = jest.fn().mockResolvedValue({});
 
         const res = await request(app)
@@ -26,6 +31,7 @@ describe('Pruebas en el Controlador de Autenticación', () => {
     });
 
     test('Debe fallar si el email ya está registrado (400)', async () => {
+        // Simulamos que el usuario YA existe
         Usuario.findOne.mockResolvedValue({ email: 'test@test.com' });
 
         const res = await request(app)
