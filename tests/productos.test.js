@@ -1,23 +1,8 @@
 const request = require('supertest');
 const app = require('../src/app');
 const Producto = require('../src/models/Producto');
-const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
 jest.mock('../src/models/Producto');
-
-let mongoServer;
-
-beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const uri = mongoServer.getUri();
-    await mongoose.connect(uri);
-});
-
-afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoServer.stop();
-});
 
 describe('Pruebas en el Controlador de Productos', () => {
     beforeEach(() => {

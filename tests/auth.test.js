@@ -1,23 +1,8 @@
 const request = require('supertest');
 const app = require('../src/app');
 const Usuario = require('../src/models/Usuario');
-const mongoose = require('mongoose');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
 jest.mock('../src/models/Usuario');
-
-let mongoServer;
-
-beforeAll(async () => {
-    mongoServer = await MongoMemoryServer.create();
-    const uri = mongoServer.getUri();
-    await mongoose.connect(uri);
-});
-
-afterAll(async () => {
-    await mongoose.disconnect();
-    await mongoServer.stop();
-});
 
 describe('Pruebas en el Controlador de Autenticación', () => {
     beforeEach(() => {
