@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../src/app');
 const Usuario = require('../src/models/Usuario');
 
 // Simulamos (mockeamos) el modelo de Usuario para no usar la BD real

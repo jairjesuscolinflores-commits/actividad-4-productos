@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../src/app');
 const Producto = require('../src/models/Producto');
 
 // Simulamos el modelo de Producto
